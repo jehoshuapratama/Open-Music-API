@@ -4,7 +4,6 @@
 
 const { Pool } = require('pg');
 const { nanoid } = require('nanoid');
-const { object } = require('joi');
 const InvariantError = require('../../exceptions/InvariantError');
 const { mapDBToModelAlbum, mapDBToModelSong } = require('../../utils');
 const NotFoundError = require('../../exceptions/NotFoundError');
@@ -47,9 +46,8 @@ class AlbumsService {
     if (!resultAlbum.rows.length) {
       throw new NotFoundError('Album tidak ditemukan');
     }
-    const album = resultAlbum.rows.map(mapDBToModelAlbum);
-    const song = resultSong.rows.map(mapDBToModelSong);
-    const ret = { ...album, song };
+    const ret = resultAlbum.rows.map(mapDBToModelAlbum)[0];
+    ret.song = resultSong.rows.map(mapDBToModelSong);
 
     return ret;
   }
