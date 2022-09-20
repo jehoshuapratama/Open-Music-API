@@ -36,7 +36,6 @@ class SongsService {
   }
 
   async getSongs(title, performer) {
-    console.log(title);
     if (title && performer) {
       const result = await this._pool.query(`SELECT id, title, performer FROM songs WHERE lower(title) LIKE '%${title}%' AND lower(performer) LIKE '%${performer}%'`);
       return result.rows.map(mapDBToModelSong);
@@ -72,8 +71,6 @@ class SongsService {
       values: [title, year, genre, performer, duration, album_id, updatedAt, id],
     };
     const result = await this._pool.query(query);
-    console.log('Test');
-    console.log(result);
     if (!result.rows.length) {
       throw new NotFoundError('Gagal memperbarui lagu. Id tidak ditemukan');
     }

@@ -34,7 +34,7 @@ class AlbumsService {
 
   async getAlbumById(id) {
     const queryAlbum = {
-      text: 'SELECT * FROM albums WHERE id = $1',
+      text: 'SELECT id, name, year FROM albums WHERE id = $1',
       values: [id],
     };
     const resultAlbum = await this._pool.query(queryAlbum);
@@ -47,7 +47,7 @@ class AlbumsService {
       throw new NotFoundError('Album tidak ditemukan');
     }
     const ret = resultAlbum.rows.map(mapDBToModelAlbum)[0];
-    ret.song = resultSong.rows.map(mapDBToModelSong);
+    ret.songs = resultSong.rows.map(mapDBToModelSong);
 
     return ret;
   }
